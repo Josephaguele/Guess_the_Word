@@ -1,30 +1,35 @@
 package com.example.android.guesstheword.screens.game
 
 import android.util.Log
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+
 /**
  * ViewModel containing all the logic needed to run the game
  */
-class GameViewModel: ViewModel() {
+class GameViewModel : ViewModel() {
 
     // The current word
-     var word = ""
+    var word = MutableLiveData<String>()
 
-    // The current score
-     var score = 0
+    // The current score is changed to a LiveData
+    var score = MutableLiveData<Int>()
 
     // The list of words - the front of the list is the next word to guess
     private lateinit var wordList: MutableList<String>
 
     init {
-        Log.i("GameViewModel","GameViewModel created!")
+        Log.i("GameViewModel", "GameViewModel created!")
         resetList()
         nextWord()
+        //set the scores initial value to zero.
+        score.value = 0
+        word.value = ""
     }
 
     override fun onCleared() {
         super.onCleared()
-        Log.i("GameViewModel","GameViewModel destroyed!")
+        Log.i("GameViewModel", "GameViewModel destroyed!")
     }
 
 
@@ -66,20 +71,20 @@ class GameViewModel: ViewModel() {
         if (wordList.isEmpty()) {
             //gameFinished()
         } else {
-            word = wordList.removeAt(0)
+            word.value = wordList.removeAt(0)
         }
 
     }
 
     /** Methods for buttons presses **/
-
-     fun onSkip() {
-        score--
+    fun onSkip() {
+        // adding references to score, and adding null safety checks
+        score.value = (score.value)?.minus(1)
         nextWord()
     }
 
-     fun onCorrect() {
-        score++
+    fun onCorrect() {
+        score.value = (score.value)?.plus(1)
         nextWord()
     }
 }

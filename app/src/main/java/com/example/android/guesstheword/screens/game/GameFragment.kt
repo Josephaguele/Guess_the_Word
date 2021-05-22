@@ -23,6 +23,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.NavHostFragment.findNavController
 import com.example.android.guesstheword.R
@@ -36,60 +37,54 @@ class GameFragment : Fragment() {
     // creating a field viewModel of type GameViewModel
     private lateinit var viewModel: GameViewModel
 
-
-
     private lateinit var binding: GameFragmentBinding
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
-                              savedInstanceState: Bundle?): View? {
-
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
 
 
         // Inflate view and obtain an instance of the binding class
         binding = DataBindingUtil.inflate(
-                inflater,
-                R.layout.game_fragment,
-                container,
-                false
+            inflater,
+            R.layout.game_fragment,
+            container,
+            false
         )
 
-        Log.i("GameFragment","Called viewModelProvider class")
+        Log.i("GameFragment", "Called viewModelProvider class")
         viewModel = ViewModelProvider(this).get(GameViewModel::class.java)
 
 
 
-        binding.correctButton.setOnClickListener { viewModel.onCorrect()
-            updateWordText()
-            updateScoreText()
+        binding.correctButton.setOnClickListener {
+            viewModel.onCorrect()
         }
 
-        binding.skipButton.setOnClickListener { viewModel.onSkip()
-            updateWordText()
-            updateScoreText()
+        binding.skipButton.setOnClickListener {
+            viewModel.onSkip()
         }
-        updateScoreText()
-        updateWordText()
+
+        // set up the observer relationship for score and word LiveDatas
+        viewModel.score.observe(viewLifecycleOwner, Observer { newScore ->
+            //You can now move the code to update the score TextView and the word TextView to your Observers.
+            binding.scoreText.text = newScore.toString()
+        })
+
+        viewModel.word.observe(viewLifecycleOwner, Observer { newWord ->
+            //You can now move the code to update the word TextView and the word TextView to your Observers.
+            binding.wordText.text = newWord.toString()
+        })
         return binding.root
-
     }
 
     /**
      * Called when the game is finished
      */
     private fun gameFinished() {
-        val action = GameFragmentDirections.actionGameToScore(viewModel.score)
+        val action = GameFragmentDirections.actionGameToScore(viewModel.score.value ?: 0)
         findNavController(this).navigate(action)
     }
 
-
-    /** Methods for updating the UI **/
-
-    private fun updateWordText() {
-        binding.wordText.text = viewModel.word
-
-    }
-
-    private fun updateScoreText() {
-        binding.scoreText.text = viewModel.score.toString()
-    }
 }
