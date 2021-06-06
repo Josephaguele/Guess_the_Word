@@ -61,14 +61,7 @@ class GameFragment : Fragment() {
         // Here we pass in the gameViewModel data in the game_fragment.xml to do the work of
         // onClickListener since the data will be bound directly
         binding.gameViewModel = viewModel
-
-        /*binding.correctButton.setOnClickListener {
-            viewModel.onCorrect()
-        }
-
-        binding.skipButton.setOnClickListener {
-            viewModel.onSkip()
-        }*/
+        
 
         /*To make your data binding lifecycle aware and to have it play nicely with LiveData,
        you need to call binding.setLifecycleOwner.
