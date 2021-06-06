@@ -70,17 +70,17 @@ class GameFragment : Fragment() {
             viewModel.onSkip()
         }*/
 
+        /*To make your data binding lifecycle aware and to have it play nicely with LiveData,
+       you need to call binding.setLifecycleOwner.
+        You must pass in this -- which refers to GameFragment. This looks like:
+       **/ binding.setLifecycleOwner(this)
+
         // set up the observer relationship for score and word LiveDatas
         viewModel.score.observe(viewLifecycleOwner, Observer { newScore ->
             //You can now move the code to update the score TextView and the word TextView to your Observers.
             binding.scoreText.text = newScore.toString()
         })
-
-        viewModel.word.observe(viewLifecycleOwner, Observer { newWord ->
-            //You can now move the code to update the word TextView and the word TextView to your Observers.
-            binding.wordText.text = newWord.toString()
-        })
-
+        
         viewModel.eventGameFinish.observe(viewLifecycleOwner,Observer{hasFinished ->
             if(hasFinished) {
                 val currentScore = viewModel.score.value ?: 0
@@ -93,6 +93,8 @@ class GameFragment : Fragment() {
         viewModel.currentTime.observe(viewLifecycleOwner, Observer { newTime ->
             binding.timerText.text = DateUtils.formatElapsedTime(newTime)
         })
+
+
         return binding.root
     }
 
