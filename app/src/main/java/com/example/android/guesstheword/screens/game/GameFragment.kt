@@ -62,13 +62,13 @@ class GameFragment : Fragment() {
         // onClickListener since the data will be bound directly
         binding.gameViewModel = viewModel
 
-        binding.correctButton.setOnClickListener {
+        /*binding.correctButton.setOnClickListener {
             viewModel.onCorrect()
         }
 
         binding.skipButton.setOnClickListener {
             viewModel.onSkip()
-        }
+        }*/
 
         // set up the observer relationship for score and word LiveDatas
         viewModel.score.observe(viewLifecycleOwner, Observer { newScore ->
