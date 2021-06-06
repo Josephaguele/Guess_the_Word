@@ -75,11 +75,6 @@ class GameFragment : Fragment() {
         You must pass in this -- which refers to GameFragment. This looks like:
        **/ binding.setLifecycleOwner(this)
 
-        // set up the observer relationship for score and word LiveDatas
-        viewModel.score.observe(viewLifecycleOwner, Observer { newScore ->
-            //You can now move the code to update the score TextView and the word TextView to your Observers.
-            binding.scoreText.text = newScore.toString()
-        })
 
         viewModel.eventGameFinish.observe(viewLifecycleOwner,Observer{hasFinished ->
             if(hasFinished) {
@@ -90,9 +85,9 @@ class GameFragment : Fragment() {
             }
         })
 
-        viewModel.currentTime.observe(viewLifecycleOwner, Observer { newTime ->
+        /*viewModel.currentTime.observe(viewLifecycleOwner, Observer { newTime ->
             binding.timerText.text = DateUtils.formatElapsedTime(newTime)
-        })
+        })*/
 
 
         return binding.root
