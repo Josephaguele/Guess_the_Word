@@ -80,7 +80,7 @@ class GameFragment : Fragment() {
             //You can now move the code to update the score TextView and the word TextView to your Observers.
             binding.scoreText.text = newScore.toString()
         })
-        
+
         viewModel.eventGameFinish.observe(viewLifecycleOwner,Observer{hasFinished ->
             if(hasFinished) {
                 val currentScore = viewModel.score.value ?: 0
