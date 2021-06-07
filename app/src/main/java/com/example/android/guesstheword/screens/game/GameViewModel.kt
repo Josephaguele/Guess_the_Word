@@ -12,7 +12,19 @@ import androidx.lifecycle.ViewModel
 /**
  * ViewModel containing all the logic needed to run the game
  */
+
+
 class GameViewModel : ViewModel() {
+
+    /*Vibration is controlled by passing in an array representing the number of milliseconds each
+    interval of buzzing and non-buzzing takes. So the array [0, 200, 100, 300] will wait
+    0 milliseconds, then buzz for 200ms, then wait 100ms,
+    then buzz fo 300ms. Here are some example buzz patterns you can copy over:*/
+    private val CORRECT_BUZZ_PATTERN = longArrayOf(100, 100, 100, 100, 100, 100)
+    private val PANIC_BUZZ_PATTERN = longArrayOf(0, 200)
+    private val GAME_OVER_BUZZ_PATTERN = longArrayOf(0, 2000)
+    private val NO_BUZZ_PATTERN = longArrayOf(0)
+
 
     // The current word
     private var _word = MutableLiveData<String>() // This is done for data privacy
